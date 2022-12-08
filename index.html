@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon"
+        href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20style%3D%22dominant-baseline%3Acentral%3Btext-anchor%3Amiddle%3Bfont-size%3A90px%3B%22%3E%26%23x1F3A5%3B%3C/text%3E%3C/svg%3E">
+    <title>youtube umekomi</title>
+    <link rel="stylesheet" type="text/css" href="./almond.lite.css">
+    <style>
+        textarea {
+            display: block;
+            width: 800px;
+            height: 200px;
+        }
+
+        .done::after {
+            content: "\2714";
+            color: yellow;
+            font-weight: bold;
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <p>EXAMPLE: <code>https://www.youtube.com/watch?v=XXXXXXXXXXX</code></p>
+        <input type="text" v-model="url">
+        <div v-if="isSearched">
+            <p><img :src="thumbnailMaxRes" alt=""></p>
+            <button @click="copyMaxRes" :class="{done:copiedMaxRes}">埋め込みコードをコピーする</button>
+            <pre><code>{{getMaxResEmbeddable}}</code></pre>
+            <hr>
+        </div>
+        <div v-if="isSearched">
+            <p><img :src="thumbnailHq" alt=""></p>
+            <button @click="copyHq" :class="{done:copiedHq}">埋め込みコードをコピーする</button>
+            <pre><code>{{getHqEmbeddable}}</code></pre>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.2.37/dist/vue.global.js"></script>
+    <script>
+
+
+        const vm = Vue.createApp({
+            data: function () {
+                return {
+                    url: "",
+                    copiedMaxRes: false,
+                    copiedHq: false
+                }
+            },
+            computed: {
+                isSearched: function () {
+                    return this.url.length > 0;
+                },
+                embedTemplate: function () {
+                    return [
+                        `<div class="youtube" data-video="https://www.youtube.com/embed/${this.movieId}">`,
+                        `<img src="{}" alt="" width="100%"/>`,
+                        `</div>`
+                    ].join("\n");
+                },
+                movieId: function () {
+                    return this.url.replace(/^.+watch\?v=/, "").substr(0, 11);
+                },
+                thumbnailMaxRes: function () {
+                    return "https://img.youtube.com/vi/" + this.movieId + "/maxresdefault.jpg";
+                },
+                thumbnailHq: function () {
+                    return "https://img.youtube.com/vi/" + this.movieId + "/hqdefault.jpg";
+                },
+                getMaxResEmbeddable: function () {
+                    return this.embedTemplate.replace(/\{\}/g, this.thumbnailMaxRes);
+                },
+                getHqEmbeddable: function () {
+                    return this.embedTemplate.replace(/\{\}/g, this.thumbnailHq);
+                },
+            },
+            methods: {
+                copyMaxRes: function () {
+                    navigator.clipboard.writeText(this.getMaxResEmbeddable.replace(/&amp;/g, "&"));
+                    this.copiedMaxRes = true;
+                },
+                copyHq: function () {
+                    navigator.clipboard.writeText(this.getHqEmbeddable.replace(/&amp;/g, "&"));
+                    this.copiedHq = true;
+                }
+            },
+            watch: {
+                url: function () {
+                    this.copiedMaxRes = false;
+                    this.copiedHq = false;
+                }
+            },
+        }).mount("#app");
+    </script>
+</body>
+
+</html>
