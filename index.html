@@ -57,11 +57,13 @@
                     return this.url.length > 0;
                 },
                 embedTemplate: function () {
-                    return [
-                        `<div class="youtube" data-video="https://www.youtube.com/embed/${this.movieId}">`,
-                        `<img src="{}" alt="" width="100%"/>`,
-                        `</div>`
-                    ].join("\n");
+                    return function(src) {
+                        return [
+                            `<div class="youtube" data-video="https://www.youtube.com/embed/${this.movieId}">`,
+                            `<img src="${src}" alt="" width="100%"/>`,
+                            `</div>`
+                        ].join("\n");
+                    }
                 },
                 movieId: function () {
                     return this.url.replace(/^.+watch\?v=/, "").substr(0, 11);
@@ -73,10 +75,10 @@
                     return "https://img.youtube.com/vi/" + this.movieId + "/hqdefault.jpg";
                 },
                 getMaxResEmbeddable: function () {
-                    return this.embedTemplate.replace(/\{\}/g, this.thumbnailMaxRes);
+                    return this.embedTemplate(this.thumbnailMaxRes);
                 },
                 getHqEmbeddable: function () {
-                    return this.embedTemplate.replace(/\{\}/g, this.thumbnailHq);
+                    return this.embedTemplate(this.thumbnailHq);
                 },
             },
             methods: {
