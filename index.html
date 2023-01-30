@@ -26,7 +26,7 @@
 
 <body>
     <div id="app">
-        <input type="text" v-model="url" placeholder="https://www.youtube.com/watch?v=XXXXXXXXXXX">
+        <input type="text" v-model="url" v-focus placeholder="https://www.youtube.com/watch?v=XXXXXXXXXXX">
         <div v-if="isSearched">
             <p><img :src="thumbnailUrl(true)" alt=""></p>
             <button @click="copyMaxRes" :class="{done:copiedMaxRes}">埋め込みコードをコピーする</button>
@@ -96,6 +96,13 @@
                     this.copiedHq = false;
                 }
             },
+            directives: {
+                focus: {
+                    mounted: function (el) {
+                        el.select();
+                    }
+                }
+            }
         }).mount("#app");
     </script>
 </body>
