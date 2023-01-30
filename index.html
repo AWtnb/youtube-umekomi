@@ -26,8 +26,7 @@
 
 <body>
     <div id="app">
-        <p>EXAMPLE: <code>https://www.youtube.com/watch?v=XXXXXXXXXXX</code></p>
-        <input type="text" v-model="url">
+        <input type="text" v-model="url" placeholder="https://www.youtube.com/watch?v=XXXXXXXXXXX">
         <div v-if="isSearched">
             <p><img :src="thumbnailUrl(true)" alt=""></p>
             <button @click="copyMaxRes" :class="{done:copiedMaxRes}">埋め込みコードをコピーする</button>
@@ -47,7 +46,7 @@
         const vm = Vue.createApp({
             data: function () {
                 return {
-                    url: "",
+                    url: "https://www.youtube.com/watch?v=DheZHcwJ6OA",
                     copiedMaxRes: false,
                     copiedHq: false
                 }
