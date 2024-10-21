@@ -26,7 +26,7 @@
 
 <body>
     <div id="app">
-        <input type="text" v-model="url" v-focus placeholder="https://www.youtube.com/watch?v=XXXXXXXXXXX">
+        <input type="text" v-model="url" v-focus placeholder="https://www.youtube-nocookie.com/watch?v=XXXXXXXXXXX">
         <div v-if="isSearched">
             <p><img :src="thumbnailUrl(true)" alt=""></p>
             <button @click="copyMaxRes" :class="{done:copiedMaxRes}">埋め込みコードをコピーする</button>
@@ -46,7 +46,7 @@
         const vm = Vue.createApp({
             data: function () {
                 return {
-                    url: "https://www.youtube.com/watch?v=DheZHcwJ6OA",
+                    url: "https://www.youtube-nocookie.com/watch?v=DheZHcwJ6OA",
                     copiedMaxRes: false,
                     copiedHq: false
                 }
@@ -58,7 +58,7 @@
                 embedMarkup: function () {
                     return function (src, isFull) {
                         return [
-                            `<div class="youtube" data-video="https://www.youtube.com/embed/${this.movieId}">`,
+                            `<div class="youtube" data-video="https://www.youtube-nocookie.com/embed/${this.movieId}">`,
                             `<img src="${this.thumbnailUrl(isFull)}" alt="" width="100%"/>`,
                             `</div>`
                         ].join("\n");
